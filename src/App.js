@@ -1,9 +1,9 @@
 import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import Sidebar from './Components/Sidebar';
-import Content from './Components/Content';
-import ajax from './Utils/ajax';
+import Sidebar from './components/Sidebar';
+import Content from './components/Content';
+import ajax from './utils/ajax';
 
 class App extends React.Component {
   constructor(props) {

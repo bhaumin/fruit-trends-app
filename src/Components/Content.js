@@ -1,7 +1,7 @@
 import React from 'react';
-import FruitTypes from './FruitTypes';
+import FruitTypeList from './FruitTypeList';
 import FruitTypeChart from './FruitTypeChart';
-import ajax from '../Utils/ajax';
+import ajax from '../utils/ajax';
 
 class Content extends React.Component {
 
@@ -21,6 +21,7 @@ class Content extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.fruit !== prevProps.fruit) {
       this.loadDeliciousnessData(this.props.fruit.id);
+      this.setState({ currentFruitType: null });
     }
   }
 
@@ -49,7 +50,7 @@ class Content extends React.Component {
     return (
       <div className="container content">
         <div className="row">
-          <FruitTypes
+          <FruitTypeList
             fruit={fruit}
             currentFruitType={currentFruitType}
             deliciousnessData={deliciousnessData}
@@ -57,7 +58,10 @@ class Content extends React.Component {
         </div>
         {currentFruitType &&
           <div className="row">
-            <FruitTypeChart currentFruitTypeDeliciousness={this.currentFruitTypeDeliciousness()} />
+            <FruitTypeChart
+              fruit={fruit}
+              currentFruitType={currentFruitType}
+              currentFruitTypeDeliciousness={this.currentFruitTypeDeliciousness()} />
           </div>
         }
       </div>

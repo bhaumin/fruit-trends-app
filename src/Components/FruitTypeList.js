@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-const FruitTypes = props => {
+const FruitTypeList = props => {
   const { fruit, currentFruitType, deliciousnessData, handleClick } = props;
 
   const getClassesToUse = (fruitType) => {
@@ -38,4 +38,4 @@ const FruitTypes = props => {
 
 };
 
-export default FruitTypes;
+export default FruitTypeList;

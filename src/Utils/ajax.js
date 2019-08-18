@@ -12,9 +12,9 @@ const fruits = [
 // for it being made available separately for each fruit
 const fruitTypesDeliciousness = {
   "1": {
-    "Fuji": [],
-    "Gala": [],
-    "Honeycrisp": [],
+    "Fuji": [{ x: 1, y: 2.0}, { x: 2, y: 5.0}, { x: 3, y: 4.0}, { x: 4, y: 3.0}, { x: 5, y: 1.0}, { x: 6, y: 5.0},],
+    "Gala": [{ x: 1, y: 5.0}, { x: 2, y: 4.0}, { x: 3, y: 4.0}, { x: 4, y: 3.0}, { x: 5, y: 4.0}, { x: 6, y: 5.0},],
+    "Honeycrisp": [{ x: 1, y: 2.0}, { x: 2, y: 1.0}, { x: 3, y: 3.0}, { x: 4, y: 1.0}, { x: 5, y: 2.0}, { x: 6, y: 1.0},],
   },
   "2": {
     "Navel": [],
