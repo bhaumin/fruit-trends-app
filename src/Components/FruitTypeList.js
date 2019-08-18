@@ -11,7 +11,7 @@ const FruitTypeList = props => {
   return (
     <div className="fruit-types-table-container">
       <h3>Fruit: {fruit.name}</h3>
-      <p>{fruit.types.length} total types of {fruit.name}</p>
+      <p class="text-muted">{fruit.types.length} total types of {fruit.name}</p>
       <br />
       <table className="table table-hover">
         <thead>
@@ -25,7 +25,7 @@ const FruitTypeList = props => {
             <tr key={fruitType} className={getClassesToUse(fruitType)} onClick={() => handleClick(fruitType)}>
               <td>{fruitType}</td>
               {deliciousnessData && deliciousnessData.hasOwnProperty(fruitType) ? (
-                <td>{props.deliciousnessData[fruitType].length} data points covering a span of &lt;duration&gt;</td>
+                <td>{props.deliciousnessData[fruitType].length} data point(s), covering a span of &lt;duration&gt;</td>
               ) : (
                 <td>No data points</td>
               )}

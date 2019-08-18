@@ -39,7 +39,10 @@
   text-align: left;
 }
 
-/* .fruit-types-table-container {} */
+.fruit-types-table-container {
+  width: 600px;
+  font-size: 0.9em;
+}
 
 .fruit-types-chart-container {
   margin-top: 50px;

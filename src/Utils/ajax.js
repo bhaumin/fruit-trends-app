@@ -12,9 +12,9 @@ const fruits = [
 // for it being made available separately for each fruit
 const fruitTypesDeliciousness = {
   "1": {
-    "Fuji": [{ x: 1, y: 2.0}, { x: 2, y: 5.0}, { x: 3, y: 4.0}, { x: 4, y: 3.0}, { x: 5, y: 1.0}, { x: 6, y: 5.0},],
-    "Gala": [{ x: 1, y: 5.0}, { x: 2, y: 4.0}, { x: 3, y: 4.0}, { x: 4, y: 3.0}, { x: 5, y: 4.0}, { x: 6, y: 5.0},],
-    "Honeycrisp": [{ x: 1, y: 2.0}, { x: 2, y: 1.0}, { x: 3, y: 3.0}, { x: 4, y: 1.0}, { x: 5, y: 2.0}, { x: 6, y: 1.0},],
+    "Fuji": [{ x: new Date(2019, 1), y: 2.0}, { x: new Date(2019, 2), y: 5.0}, { x: new Date(2019, 3), y: 4.0}, { x: new Date(2019, 4), y: 3.0}, { x: new Date(2019, 5), y: 1.0}, { x: new Date(2019, 6), y: 5.0},],
+    "Gala": [{ x: new Date(2019, 1), y: 5.0}, { x: new Date(2019, 2), y: 4.0}, { x: new Date(2019, 3), y: 4.0}, { x: new Date(2019, 4), y: 3.0}, { x: new Date(2019, 5), y: 4.0}, { x: new Date(2019, 6), y: 5.0},],
+    "Honeycrisp": [{ x: new Date(2019, 1), y: 2.0}, { x: new Date(2019, 2), y: 1.0}, { x: new Date(2019, 3), y: 3.0}, { x: new Date(2019, 4), y: 1.0}, { x: new Date(2019, 5), y: 2.0}, { x: new Date(2019, 6), y: 1.0},],
   },
   "2": {
     "Navel": [],
