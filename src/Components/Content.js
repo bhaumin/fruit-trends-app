@@ -11,6 +11,7 @@ class Content extends React.Component {
     this.state = {
       currentFruitType: null,
       deliciousnessData: null,
+      processedDeliciousnessData: null,
     };
   }
 
@@ -43,8 +44,10 @@ class Content extends React.Component {
 
   loadDeliciousnessData(fruitId) {
     // console.log("Loading deliciousness data..");
-    const deliciousnessData = ajax.fetchFruitTypeDeliciousness(fruitId);
-    this.setState({ deliciousnessData });
+    const { rawData, processedData } = ajax.fetchFruitTypeDeliciousness(fruitId);
+    const deliciousnessData = rawData;
+    const processedDeliciousnessData = processedData;
+    this.setState({ deliciousnessData, processedDeliciousnessData });
   }
 
   currentFruitTypeDeliciousness = () => {

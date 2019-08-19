@@ -28,12 +28,12 @@ const FruitTypeChart = props => {
       title: "time",
       valueFormatString: "MMM YYYY",
       prefix: "",
-      interval: 1,
+      interval: 2,
       intervalType: "month",
     },
     data: [{
       type: "line",
-      // xValueType: "dateTime",
+      xValueType: "dateTime",
       xValueFormatString: "MMM YYYY",
       toolTipContent: "Time {x}: {y}",
       dataPoints: currentFruitTypeDeliciousness
