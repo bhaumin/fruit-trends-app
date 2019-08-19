@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const FruitTypeList = props => {
   const { fruit, currentFruitType, deliciousnessData, handleFruitTypeClick } = props;
@@ -58,6 +59,13 @@ const FruitTypeList = props => {
     </div>
   );
 
+};
+
+FruitTypeList.propTypes = {
+  fruit: PropTypes.object.isRequired,
+  currentFruitType: PropTypes.string,
+  deliciousnessData: PropTypes.object.isRequired,
+  handleFruitTypeClick: PropTypes.func.isRequired,
 };
 
 export default FruitTypeList;

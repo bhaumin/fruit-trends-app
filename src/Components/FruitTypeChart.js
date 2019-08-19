@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CanvasJSReact from '../lib/canvasjs.react';
 
 const FruitTypeChart = props => {
@@ -68,5 +69,12 @@ const FruitTypeChart = props => {
     </div>
   );
 };
+
+FruitTypeChart.propTypes = {
+  fruit: PropTypes.object.isRequired,
+  currentFruitType: PropTypes.string.isRequired,
+  currentFruitTypeDeliciousnessData: PropTypes.object,
+};
+
 
 export default FruitTypeChart;

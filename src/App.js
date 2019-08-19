@@ -69,13 +69,15 @@ class App extends React.Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-2">
-              <Sidebar
-                fruits={fruits}
-                currentFruitId={currentFruitId}
-                handleFruitClick={this.fruitSelectionHandler}
-                autoRefresh={autoRefresh}
-                autoRefreshInterval={autoRefreshInterval}
-                handleAutoRefreshClick={this.autoRefreshToggleHandler} />
+              {fruits &&
+                <Sidebar
+                  fruits={fruits}
+                  currentFruitId={currentFruitId}
+                  handleFruitClick={this.fruitSelectionHandler}
+                  autoRefresh={autoRefresh}
+                  autoRefreshInterval={autoRefreshInterval}
+                  handleAutoRefreshClick={this.autoRefreshToggleHandler} />
+              }
             </div>
             <div className="col-offset-1 col-10">
               {currentFruit &&

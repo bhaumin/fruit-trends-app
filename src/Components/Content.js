@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import FruitTypeList from './FruitTypeList';
 import FruitTypeChart from './FruitTypeChart';
 import ajax from '../utils/ajax';
@@ -13,6 +14,12 @@ class Content extends React.Component {
       deliciousnessData: null,
     };
   }
+
+  static propTypes = {
+    fruit: PropTypes.object.isRequired,
+    autoRefresh: PropTypes.bool.isRequired,
+    autoRefreshInterval: PropTypes.number.isRequired,
+  };
 
   componentDidMount() {
     this.loadDeliciousnessData(this.props.fruit.id);
@@ -67,20 +74,23 @@ class Content extends React.Component {
     return (
       <div className="container content">
         <div className="row">
-          <FruitTypeList
-            fruit={fruit}
-            currentFruitType={currentFruitType}
-            deliciousnessData={deliciousnessData}
-            handleFruitTypeClick={this.fruitTypeSelectionHandler} />
+          {deliciousnessData &&
+            <FruitTypeList
+              fruit={fruit}
+              currentFruitType={currentFruitType}
+              deliciousnessData={deliciousnessData}
+              handleFruitTypeClick={this.fruitTypeSelectionHandler} />
+          }
         </div>
-        {currentFruitType &&
-          <div className="row">
+
+        <div className="row">
+          {deliciousnessData && currentFruitType &&
             <FruitTypeChart
               fruit={fruit}
               currentFruitType={currentFruitType}
               currentFruitTypeDeliciousnessData={this.currentFruitTypeDeliciousnessData()} />
-          </div>
-        }
+          }
+        </div>
       </div>
     );
   }

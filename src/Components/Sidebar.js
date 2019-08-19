@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import FontAwesome from 'react-fontawesome';
 
 const Sidebar = props => {
@@ -34,6 +35,15 @@ const Sidebar = props => {
       </div>
     </div>
   );
+};
+
+Sidebar.propTypes = {
+  fruits: PropTypes.array.isRequired,
+  currentFruitId: PropTypes.number,
+  handleFruitClick: PropTypes.func.isRequired,
+  autoRefresh: PropTypes.bool.isRequired,
+  autoRefreshInterval: PropTypes.number.isRequired,
+  handleAutoRefreshClick: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
