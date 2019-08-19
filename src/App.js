@@ -22,18 +22,18 @@ class App extends React.Component {
 
   componentDidUpdate(_, prevState) {
     if (this.state.autoRefresh && !prevState.autoRefresh) {
-      // console.log("Starting interval..");
+      // console.log("App::componentDidUpdate - Starting interval..");
       this.timerId = setInterval(this.loadAllFruits, 5000);
     }
 
     if (!this.state.autoRefresh && prevState.autoRefresh) {
-      // console.log("Clearing interval..");
+      // console.log("App::componentDidUpdate - Clearing interval..");
       clearInterval(this.timerId);
     }
   }
 
   componentWillUnmount() {
-    // console.log("Component Will Unmount..");
+    // console.log("App::componentWillUnmount - Clearing interval..");
     clearInterval(this.timerId);
   }
 
@@ -77,7 +77,8 @@ class App extends React.Component {
             </div>
             <div className="col-offset-1 col-10">
               {currentFruit &&
-                <Content fruit={currentFruit} />
+                <Content fruit={currentFruit}
+                  autoRefresh={autoRefresh} />
               }
             </div>
           </div>

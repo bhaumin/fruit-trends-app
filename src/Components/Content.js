@@ -19,16 +19,30 @@ class Content extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    // console.log("Content::componentDidUpdate", this.props.fruit !== prevProps.fruit);
     if (this.props.fruit !== prevProps.fruit) {
       this.loadDeliciousnessData(this.props.fruit.id);
+      this.setState({ currentFruitType: null });
     }
 
-    if (this.props.fruit.id !== prevProps.fruit.id) {
-      this.setState({ currentFruitType: null });
+    if (this.props.autoRefresh && !prevProps.autoRefresh) {
+      // console.log("Content::componentDidUpdate - Starting interval..");
+      this.timerId = setInterval(() => this.loadDeliciousnessData(this.props.fruit.id), 5000);
+    }
+
+    if (!this.props.autoRefresh && prevProps.autoRefresh) {
+      // console.log("Content::componentDidUpdate - Clearing interval..");
+      clearInterval(this.timerId);
     }
   }
 
+  componentWillUnmount() {
+    // console.log("Content::componentWillUnmount - Clearing interval..");
+    clearInterval(this.timerId);
+  }
+
   loadDeliciousnessData(fruitId) {
+    // console.log("Loading deliciousness data..");
     const deliciousnessData = ajax.fetchFruitTypeDeliciousness(fruitId);
     this.setState({ deliciousnessData });
   }
