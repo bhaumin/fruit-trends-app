@@ -33,17 +33,39 @@
   }
 }
 
-/* .sidebar {} */
+.auto-refresh-icon {
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.auto-refresh-icon.active {
+  color: blue;
+}
 
 .content {
   text-align: left;
 }
 
-.fruit-types-table-container {
+.table-container {
   width: 600px;
   font-size: 0.9em;
 }
 
-.fruit-types-chart-container {
+.table .table-row {
+  cursor: pointer;
+}
+
+.table .col-types {
+  width: 20%;
+  text-align: center;
+}
+
+.table .col-summary {
+  width: 80%;
+  padding-left: 40px;
+  text-align: left;
+}
+
+.chart-container {
   margin-top: 50px;
 }

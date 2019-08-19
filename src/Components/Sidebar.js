@@ -1,8 +1,9 @@
 import React from 'react';
+import FontAwesome from 'react-fontawesome';
 
 const Sidebar = props => {
 
-  const { fruits, currentFruitId, handleClick } = props;
+  const { fruits, currentFruitId, handleFruitClick, autoRefresh, handleAutoRefreshClick } = props;
 
   const getClassesToUse = (fruitId) => {
     const defaultButtonClasses = ["list-group-item", "list-group-item-action"];
@@ -12,14 +13,20 @@ const Sidebar = props => {
     return classesToUse.join(" ");
   }
 
+  const autoRefreshIconClasses = (autoRefresh ? [ "auto-refresh-icon", "active" ] : [ "auto-refresh-icon" ]).join(" ");
+  const autoRefreshIconText = (autoRefresh ? "Auto Refresh On" : "Auto Refresh Off") + " (5s)";
+
   return (
     <div>
+      <div className={autoRefreshIconClasses} onClick={handleAutoRefreshClick}>
+        <small><FontAwesome name="refresh" /> {autoRefreshIconText}</small>
+      </div>
       <div className="list-group">
         {fruits.map(fruit =>
           <button
             type="button"
             key={fruit.id}
-            onClick={() => handleClick(fruit.id)}
+            onClick={() => handleFruitClick(fruit.id)}
             className={getClassesToUse(fruit.id)}>
               {fruit.name}
           </button>

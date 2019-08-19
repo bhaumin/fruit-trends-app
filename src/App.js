@@ -11,14 +11,37 @@ class App extends React.Component {
 
     this.state = {
       fruits: [],
-      currentFruitId: 1,
+      currentFruitId: null,
+      autoRefresh: false,
     };
   }
 
   componentDidMount() {
+    this.loadAllFruits();
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.autoRefresh && !prevState.autoRefresh) {
+      // console.log("Starting interval..");
+      this.timerId = setInterval(this.loadAllFruits, 5000);
+    }
+
+    if (!this.state.autoRefresh && prevState.autoRefresh) {
+      // console.log("Clearing interval..");
+      clearInterval(this.timerId);
+    }
+  }
+
+  componentWillUnmount() {
+    // console.log("Component Will Unmount..");
+    clearInterval(this.timerId);
+  }
+
+  loadAllFruits = () => {
+    // console.log("Load fruits..");
     const fruits = ajax.fetchAllFruits();
     this.setState({ fruits });
-  }
+  };
 
   currentFruit = () => {
     return this.state.fruits.find((fruit) => fruit.id === this.state.currentFruitId);
@@ -30,8 +53,14 @@ class App extends React.Component {
     });
   };
 
+  autoRefreshToggleHandler = () => {
+    this.setState({
+      autoRefresh: !this.state.autoRefresh
+    });
+  };
+
   render() {
-    const { fruits, currentFruitId } = this.state;
+    const { fruits, currentFruitId, autoRefresh } = this.state;
     const currentFruit = this.currentFruit();
 
     return (
@@ -42,7 +71,9 @@ class App extends React.Component {
               <Sidebar
                 fruits={fruits}
                 currentFruitId={currentFruitId}
-                handleClick={this.fruitSelectionHandler} />
+                handleFruitClick={this.fruitSelectionHandler}
+                autoRefresh={autoRefresh}
+                handleAutoRefreshClick={this.autoRefreshToggleHandler} />
             </div>
             <div className="col-offset-1 col-10">
               {currentFruit &&

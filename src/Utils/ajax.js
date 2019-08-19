@@ -6,6 +6,7 @@ const fruits = [
   { id: 3, name: "Pears", types: [ "White", "Brown" ] },
 ];
 
+// TODO: change x-axis values to unix timestamps
 const fruitTypesDeliciousness = {
   "1": {
     "Fuji": [{ x: new Date(2018, 3), y: 2.0}, { x: new Date(2018, 6), y: 5.0}, { x: new Date(2018, 9), y: 4.0}, { x: new Date(2019, 0), y: 3.0}, { x: new Date(2019, 3), y: 1.0}, { x: new Date(2019, 6), y: 4.0}, ],

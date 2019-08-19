@@ -2,11 +2,12 @@ import React from 'react';
 import moment from 'moment';
 
 const FruitTypeList = props => {
-  const { fruit, currentFruitType, deliciousnessData, handleClick } = props;
+  const { fruit, currentFruitType, deliciousnessData, handleFruitTypeClick } = props;
 
   const getClassesToUse = (fruitType) => {
-    const selectedRowClasses = [ "table-primary" ];
-    return fruitType === currentFruitType ? selectedRowClasses.join(" ") : "";
+    const defaultRowClasses = [ "table-row" ];
+    const selectedRowClasses = defaultRowClasses.concat("table-primary");
+    return fruitType === currentFruitType ? selectedRowClasses.join(" ") : defaultRowClasses.join(" ");
   };
 
   const getDuration = (data) => {
@@ -62,28 +63,27 @@ const FruitTypeList = props => {
 
 
   return (
-    <div className="fruit-types-table-container">
+    <div className="table-container">
       <h3>Fruit: {fruit.name}</h3>
-      <p class="text-muted">{fruit.types.length} total types of {fruit.name}</p>
+      <p className="text-muted">{fruit.types.length} total types of {fruit.name}</p>
       <br />
       <table className="table table-hover">
         <thead>
           <tr>
-            <th scope="col">Types</th>
-            <th scope="col">"Deliciousness"</th>
+            <th scope="col" className="col-types">Types</th>
+            <th scope="col" className="col-summary">"Deliciousness"</th>
           </tr>
         </thead>
         <tbody>
           {fruit.types && fruit.types.map(fruitType =>
-            <tr key={fruitType} className={getClassesToUse(fruitType)} onClick={() => handleClick(fruitType)}>
-              <td>{fruitType}</td>
+            <tr key={fruitType} className={getClassesToUse(fruitType)} onClick={() => handleFruitTypeClick(fruitType)}>
+              <td className="col-types">{fruitType}</td>
               {deliciousnessData && deliciousnessData.hasOwnProperty(fruitType) ? (
-                <td>
-                  {/* {deliciousnessData[fruitType].length} data point(s), covering a span of &lt;duration&gt; */}
+                <td className="col-summary">
                   {getRowText(deliciousnessData[fruitType])}
                 </td>
               ) : (
-                <td>No data points</td>
+                <td className="col-summary">No data points</td>
               )}
             </tr>
           )}

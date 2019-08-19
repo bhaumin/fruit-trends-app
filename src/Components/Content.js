@@ -21,6 +21,9 @@ class Content extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.fruit !== prevProps.fruit) {
       this.loadDeliciousnessData(this.props.fruit.id);
+    }
+
+    if (this.props.fruit.id !== prevProps.fruit.id) {
       this.setState({ currentFruitType: null });
     }
   }
@@ -54,7 +57,7 @@ class Content extends React.Component {
             fruit={fruit}
             currentFruitType={currentFruitType}
             deliciousnessData={deliciousnessData}
-            handleClick={this.fruitTypeSelectionHandler} />
+            handleFruitTypeClick={this.fruitTypeSelectionHandler} />
         </div>
         {currentFruitType &&
           <div className="row">

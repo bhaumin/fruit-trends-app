@@ -13,8 +13,8 @@ const FruitTypeChart = props => {
     animationEnabled: false,
     exportEnabled: false,
     theme: "light2", // "light1", "dark1", "dark2"
-    height: 400,
     width: 600,
+    height: 400,
     title: {
       text: ""
     },
@@ -41,7 +41,7 @@ const FruitTypeChart = props => {
   };
 
   return (
-    <div className="fruit-types-chart-container">
+    <div className="chart-container">
       <h6>{chartHeader}</h6>
       <CanvasJSChart options={options}
 				/* onRef={ref => this.chart = ref} */
