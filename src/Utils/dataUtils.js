@@ -1,15 +1,29 @@
 import moment from 'moment';
 
-// Add/keep things in the decreasing order in intervals
-const intervals = [ "year", "month", "day" ];
+// Note about interval types:
+// Keep things it in decreasing order - year > month > day
+
+// Further granular interval types like "hour" or "minute"
+// could be added if you implement its rollup logic in
+// the rollupDataSeriesData() method below and define
+// the corresponding chart options in getChartOptions()
+const intervalTypes = [ "year", "month", "day" ];
+let apiXKey = "x";
+let apiYKey = "y";
+
+const updateApiKeys = (xKey, yKey) => {
+  apiXKey = xKey;
+  apiYKey = yKey;
+};
 
 const getDurationSpan = (dataSeries) => {
   let durationSpanCount = 0;
   let durationSpanType = null;
 
   if (dataSeries && dataSeries.length > 0) {
-    const firstDate = moment(dataSeries[0].x);
-    const lastDate = moment(dataSeries[dataSeries.length - 1].x);
+    const n = dataSeries.length;
+    const firstDate = moment(dataSeries[0][apiXKey]);
+    const lastDate = moment(dataSeries[n-1][apiXKey]);
     const diff = lastDate.diff(firstDate);
     const dur = moment.duration(diff);
 
@@ -71,78 +85,99 @@ const initRollupSeries = (series, type) => {
 
 const addToYearlySeries = (dataPoint, targetSeries) => {
   const n = targetSeries.length;
-  const newMoment = moment(dataPoint.x);
+  const lastDataPoint = n > 0 ? targetSeries[n-1] : null;
+  const newMoment = moment(dataPoint[apiXKey]);
   const newYearTimestamp = moment([ newMoment.year(), 0 ]).valueOf();
-  const lastYearTimestamp = n > 0 ? targetSeries[n-1].x : null;
+  const lastYearTimestamp = lastDataPoint ? lastDataPoint.x : null;
+  const newY = dataPoint[apiYKey];
 
   if (newYearTimestamp && lastYearTimestamp && newYearTimestamp === lastYearTimestamp) {
     // merge
-    targetSeries[n-1].y = ((targetSeries[n-1].y + dataPoint.y) / (n+1)).toFixed(1);
+    mergeWithLastDataPoint(lastDataPoint, newY);
   } else {
     // add
-    targetSeries.push({x: newYearTimestamp, y: dataPoint.y});
+    targetSeries.push({x: newYearTimestamp, y: newY, totalY: newY, count: 1});
   }
 };
 
 const addToMonthlySeries = (dataPoint, targetSeries) => {
   const n = targetSeries.length;
-  const newMoment = moment(dataPoint.x);
+  const lastDataPoint = n > 0 ? targetSeries[n-1] : null;
+  const newMoment = moment(dataPoint[apiXKey]);
   const newMonthTimestamp = moment([ newMoment.year(), newMoment.month() ]).valueOf();
-  const lastMonthTimestamp = n > 0 ? targetSeries[n-1].x : null;
+  const lastMonthTimestamp = lastDataPoint ? lastDataPoint.x : null;
+  const newY = dataPoint[apiYKey];
 
   if (newMonthTimestamp && lastMonthTimestamp && newMonthTimestamp === lastMonthTimestamp) {
     // merge
-    targetSeries[n-1].y = ((targetSeries[n-1].y + dataPoint.y) / (n+1)).toFixed(1);
+    mergeWithLastDataPoint(lastDataPoint, newY);
   } else {
     // add
-    targetSeries.push({x: newMonthTimestamp, y: dataPoint.y});
+    targetSeries.push({x: newMonthTimestamp, y: newY, totalY: newY, count: 1});
   }
 };
 
 const addToDailySeries = (dataPoint, targetSeries) => {
   const n = targetSeries.length;
-  const newMoment = moment(dataPoint.x);
+  const lastDataPoint = n > 0 ? targetSeries[n-1] : null;
+  const newMoment = moment(dataPoint[apiXKey]);
   const newDateTimestamp = moment([ newMoment.year(), newMoment.month(), newMoment.date() ]).valueOf();
-  const lastDateTimestamp = n > 0 ? targetSeries[n-1].x : null;
+  const lastDateTimestamp = lastDataPoint ? lastDataPoint.x : null;
+  const newY = dataPoint[apiYKey];
 
   if (newDateTimestamp && lastDateTimestamp && newDateTimestamp === lastDateTimestamp) {
     // merge
-    targetSeries[n-1].y = ((targetSeries[n-1].y + dataPoint.y) / (n+1)).toFixed(1);
+    mergeWithLastDataPoint(lastDataPoint, newY);
   } else {
     // add
-    targetSeries.push({x: newDateTimestamp, y: dataPoint.y});
+    targetSeries.push({x: newDateTimestamp, y: newY, totalY: newY, count: 1});
   }
 };
 
+const mergeWithLastDataPoint = (lastDataPoint, newY) => {
+  const { totalY, count } = lastDataPoint;
+  // Running Mean
+  const updatedTotalY = +(totalY + newY);
+  const updatedCount = +(count + 1);
+  const updatedY = (updatedTotalY / updatedCount).toFixed(2);
+  lastDataPoint.y = parseFloat(updatedY);
+  lastDataPoint.totalY = updatedTotalY;
+  lastDataPoint.count = updatedCount;
+};
+
 const findIdealIntervalType = (dataSeriesRollup) => {
-  for (let interval of intervals) {
-    if (dataSeriesRollup.hasOwnProperty(interval)) {
-      const currentSeries = dataSeriesRollup[interval];
+  for (let intervalType of intervalTypes) {
+    if (dataSeriesRollup.hasOwnProperty(intervalType)) {
+      const currentSeries = dataSeriesRollup[intervalType];
       if (currentSeries.length >= 5) {
-        return interval;
+        return intervalType;
       }
     }
   }
 
   // As last resort, return the last supported interval
-  return intervals[intervals.length - 1];
+  return intervalTypes[intervalTypes.length - 1];
 };
 
-const calcIdealIntervalCount = (dataSeries) => {
-  const maxXDataPointsCount = 10;
-  if (dataSeries.length >= 15) {
-    return Math.round(dataSeries.length / maxXDataPointsCount);
+const calcIdealIntervalCount = (intervalType, dataSeries) => {
+  const n = dataSeries.length;
+  const dataPointStartX = moment(dataSeries[0].x);
+  const dataPointEndX = moment(dataSeries[n-1].x);
+  const idealIntervalPoints = 10;
+  const actualIntervalPoints = dataPointEndX.diff(dataPointStartX, intervalType + "s");
+  if (actualIntervalPoints >= 15) {
+    return Math.round(actualIntervalPoints / idealIntervalPoints);
   }
 
   return 1;
 };
 
-const getChartOptions = (interval, dataSeries) => {
+const getChartOptions = (intervalType, dataSeries) => {
   const chartOptions = {};
-  chartOptions["interval"] = calcIdealIntervalCount(dataSeries);
+  chartOptions["interval"] = calcIdealIntervalCount(intervalType, dataSeries);
   chartOptions["xValueType"] = "dateTime";
 
-  switch(interval) {
+  switch(intervalType) {
     case "year":
       chartOptions["valueFormatString"] = "YYYY";
       chartOptions["intervalType"] = "year";
@@ -167,11 +202,20 @@ const getChartOptions = (interval, dataSeries) => {
 
 export default {
 
-  importRawDeliciousness(data) {
+  importRawDeliciousness(data, apiDataPointKeys) {
     const processedData = {};
+
+    if (apiXKey !== apiDataPointKeys.xKey || apiYKey !== apiDataPointKeys.yKey) {
+      updateApiKeys(apiDataPointKeys.xKey, apiDataPointKeys.yKey);
+    }
 
     for (let fruitType of Object.keys(data)) {
       const rawDataSeries = data[fruitType];
+
+      if (!rawDataSeries || rawDataSeries.length === 0) {
+        continue;
+      }
+
       const { durationSpanCount, durationSpanType } = getDurationSpan(rawDataSeries);
       const dataSeriesRollup = rollupDataSeriesData(rawDataSeries, durationSpanType);
 
@@ -180,19 +224,19 @@ export default {
           durationSpanCount,
           durationSpanType,
           rawDataPointCount: rawDataSeries.length,
-          idealInterval: findIdealIntervalType(dataSeriesRollup),
-          availableIntervals: Object.keys(dataSeriesRollup),
+          idealIntervalType: findIdealIntervalType(dataSeriesRollup),
+          availableIntervalTypes: Object.keys(dataSeriesRollup),
         }
       };
 
       processedData[fruitType]["seriesData"] = {};
       const seriesDataObj = processedData[fruitType]["seriesData"];
 
-      for (let interval of intervals) {
-        if (dataSeriesRollup.hasOwnProperty(interval)) {
-          seriesDataObj[interval] = {
-            chartOptions: getChartOptions(interval, dataSeriesRollup[interval]),
-            chartData: dataSeriesRollup[interval],
+      for (let intervalType of intervalTypes) {
+        if (dataSeriesRollup.hasOwnProperty(intervalType)) {
+          seriesDataObj[intervalType] = {
+            chartOptions: getChartOptions(intervalType, dataSeriesRollup[intervalType]),
+            chartData: dataSeriesRollup[intervalType],
           };
         }
       }

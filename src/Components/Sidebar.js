@@ -3,7 +3,7 @@ import FontAwesome from 'react-fontawesome';
 
 const Sidebar = props => {
 
-  const { fruits, currentFruitId, handleFruitClick, autoRefresh, handleAutoRefreshClick } = props;
+  const { fruits, currentFruitId, handleFruitClick, autoRefresh, autoRefreshInterval, handleAutoRefreshClick } = props;
 
   const getClassesToUse = (fruitId) => {
     const defaultButtonClasses = ["list-group-item", "list-group-item-action"];
@@ -14,7 +14,7 @@ const Sidebar = props => {
   }
 
   const autoRefreshIconClasses = (autoRefresh ? [ "auto-refresh-icon", "active" ] : [ "auto-refresh-icon" ]).join(" ");
-  const autoRefreshIconText = (autoRefresh ? "Auto Refresh On" : "Auto Refresh Off") + " (5s)";
+  const autoRefreshIconText = (autoRefresh ? `Auto Refresh : On (${autoRefreshInterval}s)` : "Auto Refresh : Off");
 
   return (
     <div>

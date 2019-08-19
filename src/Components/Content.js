@@ -11,7 +11,6 @@ class Content extends React.Component {
     this.state = {
       currentFruitType: null,
       deliciousnessData: null,
-      processedDeliciousnessData: null,
     };
   }
 
@@ -28,7 +27,7 @@ class Content extends React.Component {
 
     if (this.props.autoRefresh && !prevProps.autoRefresh) {
       // console.log("Content::componentDidUpdate - Starting interval..");
-      this.timerId = setInterval(() => this.loadDeliciousnessData(this.props.fruit.id), 5000);
+      this.timerId = setInterval(() => this.loadDeliciousnessData(this.props.fruit.id), this.props.autoRefreshInterval * 1000);
     }
 
     if (!this.props.autoRefresh && prevProps.autoRefresh) {
@@ -44,13 +43,11 @@ class Content extends React.Component {
 
   loadDeliciousnessData(fruitId) {
     // console.log("Loading deliciousness data..");
-    const { rawData, processedData } = ajax.fetchFruitTypeDeliciousness(fruitId);
-    const deliciousnessData = rawData;
-    const processedDeliciousnessData = processedData;
-    this.setState({ deliciousnessData, processedDeliciousnessData });
+    const deliciousnessData = ajax.fetchFruitTypeDeliciousness(fruitId);
+    this.setState({ deliciousnessData });
   }
 
-  currentFruitTypeDeliciousness = () => {
+  currentFruitTypeDeliciousnessData = () => {
     return this.state.deliciousnessData && this.state.currentFruitType &&
     this.state.deliciousnessData.hasOwnProperty(this.state.currentFruitType)
       ? this.state.deliciousnessData[this.state.currentFruitType]
@@ -81,7 +78,7 @@ class Content extends React.Component {
             <FruitTypeChart
               fruit={fruit}
               currentFruitType={currentFruitType}
-              currentFruitTypeDeliciousness={this.currentFruitTypeDeliciousness()} />
+              currentFruitTypeDeliciousnessData={this.currentFruitTypeDeliciousnessData()} />
           </div>
         }
       </div>

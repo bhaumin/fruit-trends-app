@@ -13,6 +13,7 @@ class App extends React.Component {
       fruits: [],
       currentFruitId: null,
       autoRefresh: false,
+      autoRefreshInterval: 10, /* secs */
     };
   }
 
@@ -23,7 +24,7 @@ class App extends React.Component {
   componentDidUpdate(_, prevState) {
     if (this.state.autoRefresh && !prevState.autoRefresh) {
       // console.log("App::componentDidUpdate - Starting interval..");
-      this.timerId = setInterval(this.loadAllFruits, 5000);
+      this.timerId = setInterval(this.loadAllFruits, this.state.autoRefreshInterval * 1000);
     }
 
     if (!this.state.autoRefresh && prevState.autoRefresh) {
@@ -60,7 +61,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { fruits, currentFruitId, autoRefresh } = this.state;
+    const { fruits, currentFruitId, autoRefresh, autoRefreshInterval } = this.state;
     const currentFruit = this.currentFruit();
 
     return (
@@ -73,12 +74,14 @@ class App extends React.Component {
                 currentFruitId={currentFruitId}
                 handleFruitClick={this.fruitSelectionHandler}
                 autoRefresh={autoRefresh}
+                autoRefreshInterval={autoRefreshInterval}
                 handleAutoRefreshClick={this.autoRefreshToggleHandler} />
             </div>
             <div className="col-offset-1 col-10">
               {currentFruit &&
                 <Content fruit={currentFruit}
-                  autoRefresh={autoRefresh} />
+                  autoRefresh={autoRefresh}
+                  autoRefreshInterval={autoRefreshInterval} />
               }
             </div>
           </div>

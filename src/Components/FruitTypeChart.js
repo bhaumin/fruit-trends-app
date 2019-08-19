@@ -5,38 +5,57 @@ const FruitTypeChart = props => {
   // const CanvasJS = CanvasJSReact.CanvasJS;
   const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-  const { fruit, currentFruitType, currentFruitTypeDeliciousness } = props;
-
+  const { fruit, currentFruitType, currentFruitTypeDeliciousnessData } = props;
   const chartHeader = `${fruit.name} / ${currentFruitType} / "Deliciousness" over time`;
+
+  if (!currentFruitTypeDeliciousnessData) {
+    return (
+      <div className="chart-container">
+        <h6>{chartHeader}</h6>
+        <small className="text-muted">No data points to display in the chart</small>
+      </div>
+    );
+  }
+
+  const { metaData, seriesData } = currentFruitTypeDeliciousnessData;
+  const { idealIntervalType } = metaData;
+  const { chartOptions, chartData } = seriesData[idealIntervalType];
+  const { interval, xValueType, valueFormatString, intervalType } = chartOptions;
+
+  const chartWidth = 600;
+  const chartHeight = 400;
+  const axisYMin = 0.8;
+  const axisYMax = 5.2;
 
   const options = {
     animationEnabled: false,
     exportEnabled: false,
     theme: "light2", // "light1", "dark1", "dark2"
-    width: 600,
-    height: 400,
+    width: chartWidth,
+    height: chartHeight,
     title: {
       text: ""
     },
     axisY: {
       title: "level of deliciousness",
-      includeZero: false,
+      includeZero: true,
       suffix: "",
-      interval: 1,
+      minimum: axisYMin,
+      maximum: axisYMax,
     },
     axisX: {
       title: "time",
-      valueFormatString: "MMM YYYY",
+      valueFormatString,
       prefix: "",
-      interval: 2,
-      intervalType: "month",
+      interval,
+      intervalType,
     },
     data: [{
       type: "line",
-      xValueType: "dateTime",
-      xValueFormatString: "MMM YYYY",
+      xValueType,
+      xValueFormatString: valueFormatString,
       toolTipContent: "Time {x}: {y}",
-      dataPoints: currentFruitTypeDeliciousness
+      dataPoints: chartData
     }]
   };
 
