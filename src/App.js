@@ -38,9 +38,9 @@ class App extends React.Component {
     clearInterval(this.timerId);
   }
 
-  loadAllFruits = () => {
+  loadAllFruits = async () => {
     // console.log("Load fruits..");
-    const fruits = ajax.fetchAllFruits();
+    const fruits = await ajax.fetchAllFruits();
     this.setState({ fruits });
   };
 
@@ -62,7 +62,6 @@ class App extends React.Component {
 
   render() {
     const { fruits, currentFruitId, autoRefresh, autoRefreshInterval } = this.state;
-    const currentFruit = this.currentFruit();
 
     return (
       <div className="App">
@@ -80,8 +79,8 @@ class App extends React.Component {
               }
             </div>
             <div className="col-offset-1 col-10">
-              {currentFruit &&
-                <Content fruit={currentFruit}
+              {this.currentFruit() &&
+                <Content fruit={this.currentFruit()}
                   autoRefresh={autoRefresh}
                   autoRefreshInterval={autoRefreshInterval} />
               }

@@ -29,6 +29,9 @@ class Content extends React.Component {
     // console.log("Content::componentDidUpdate", this.props.fruit !== prevProps.fruit);
     if (this.props.fruit !== prevProps.fruit) {
       this.loadDeliciousnessData(this.props.fruit.id);
+    }
+
+    if (this.props.fruit.id !== prevProps.fruit.id) {
       this.setState({ currentFruitType: null });
     }
 
@@ -48,9 +51,9 @@ class Content extends React.Component {
     clearInterval(this.timerId);
   }
 
-  loadDeliciousnessData(fruitId) {
+  loadDeliciousnessData = async (fruitId) => {
     // console.log("Loading deliciousness data..");
-    const deliciousnessData = ajax.fetchFruitTypeDeliciousness(fruitId);
+    const deliciousnessData = await ajax.fetchFruitDeliciousnessData(fruitId);
     this.setState({ deliciousnessData });
   }
 

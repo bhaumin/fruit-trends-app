@@ -24,7 +24,7 @@ const FruitTypeChart = props => {
   const { interval, xValueType, valueFormatString, intervalType } = chartOptions;
 
   const chartWidth = 600;
-  const chartHeight = 400;
+  const chartHeight = 300;
   const axisYMin = 0.8;
   const axisYMax = 5.2;
 

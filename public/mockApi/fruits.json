@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Apples",
+    "types": [
+      "Fuji",
+      "Gala",
+      "Honeycrisp",
+      "Red"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Oranges",
+    "types": [
+      "Navel",
+      "Mandarin",
+      "Cuties"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Grapes",
+    "types": [
+      "Green",
+      "Red",
+      "Black"
+    ]
+  }
+]
