@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 // Note about interval types:
-// Keep things it in decreasing order - year > month > day
+// Keep it in decreasing order - year > month > day
 
 // Further granular interval types like "hour" or "minute"
 // could be added if you implement its rollup logic in
